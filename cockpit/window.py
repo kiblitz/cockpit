@@ -13,6 +13,7 @@ class _Window:
     self.height = height
     self.title = title
     self.preprocessing = preprocessing
+    self.components = []
 
   def display(self):
     dimensions = (self.width*self.block_size, self.height*self.block_size)
@@ -21,7 +22,15 @@ class _Window:
     self.preprocessing(root)
     root.geometry("%dx%d" % dimensions)
     root.resizable(False, False)
+
+    for component_init in self.components:
+      components_init(root)
+
     root.mainloop()
+
+  def add_component(component, x, y):
+    abs_x, abs_y = x * self.block_size, y * self.block_size
+    self.components.append(component.init(abs_x, abs_y))
 
 def new(**kwargs):
   return _Window(**kwargs)
